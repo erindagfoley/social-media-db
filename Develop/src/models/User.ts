@@ -41,11 +41,13 @@ const reactionSchema = new Schema<IReaction>( //schema only
 );
 
 const userSchema = new Schema<IUser>({
+    //not sure what to replace first with
     first: {
         type: String,
         required: true,
         max_length: 50,
     },
+    //not sure what to replace last with
     last: {
         type: String,
         required: true,
