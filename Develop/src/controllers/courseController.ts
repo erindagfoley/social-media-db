@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Course, Student } from '../models/index.js';
+import { Course, Student } from '../models/index.js'; //user and thought for challenge
 
 /**
  * GET All Courses /courses
@@ -7,7 +7,7 @@ import { Course, Student } from '../models/index.js';
 */
 export const getAllCourses = async(_req: Request, res: Response) => {
     try {
-        const courses = await Course.find();
+        const courses = await Course.find(); //user.find or course.find (depends on how I change it)
         res.json(courses);
     } catch(error: any){
         res.status(500).json({
@@ -41,27 +41,22 @@ export const getCourseById = async (req: Request, res: Response) => {
 
   /**
  * POST Course /courses
- * @param object name, inPerson, students
+ * @param object username
  * @returns a single Course object
 */
 export const createCourse = async (req: Request, res: Response) => {
-  try {
-    console.log(req.body);
-    const { name, inPerson, students } = req.body;
-    const newCourse = await Course.create({
-      name,
-      inPerson,
-      students
-    });
-    res.status(201).json(newCourse);
-  } catch (error: any) {
-    console.log(error);
-    
-    res.status(400).json({
-      message: error.message
-    });
-  }
-};
+    const { course } = req.body;
+    try {
+      const newCourse = await Course.create({
+        course
+      });
+      res.status(201).json(newCourse);
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message
+      });
+    }
+  };
 
 /**
  * PUT Course based on id /courses/:id
