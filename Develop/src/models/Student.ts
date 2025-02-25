@@ -1,24 +1,26 @@
 import { Schema, Types, model, type Document } from 'mongoose';
 
 interface IAssignment extends Document {
-    assignmentId: Schema.Types.ObjectId,
-    name: string,
+    reactionId: Schema.Types.ObjectId,
+    name: string, 
+    //not sure what we should replace score with, if anything
     score: number
 }
 
-interface IStudent extends Document {
+interface IUser extends Document {
     first: string,
     last: string,
     github: string,
     assignments: Schema.Types.ObjectId[]
 }
 
-const assignmentSchema = new Schema<IAssignment>( //schema only
+const reactionSchema = new Schema<IReaction>( //schema only
     {
-        assignmentId: {
+        reactionId: {
             type: Schema.Types.ObjectId,
             default: () => new Types.ObjectId(),
         },
+        //not sure what to replace name and score with
         name: {
             type: String,
             required: true,
@@ -38,7 +40,7 @@ const assignmentSchema = new Schema<IAssignment>( //schema only
     }
 );
 
-const studentSchema = new Schema<IStudent>({
+const userSchema = new Schema<IUser>({
     first: {
         type: String,
         required: true,
@@ -49,12 +51,13 @@ const studentSchema = new Schema<IStudent>({
         required: true,
         max_length: 50,
     },
+    //not sure what to replace github with
     github: {
         type: String,
         required: true,
         max_length: 50,
     },
-    assignments: [assignmentSchema], //thought model will have a subdoc of reactions. user model will not
+    assignments: [thoughtSchema], //thought model will have a subdoc of reactions. user model will not
 },
     {
         toJSON: {
@@ -64,6 +67,6 @@ const studentSchema = new Schema<IStudent>({
     }
 );
 
-const Student = model('Student', studentSchema);
+const User = model('User', userSchema);
 
-export default Student;
+export default User;
