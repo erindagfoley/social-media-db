@@ -1,20 +1,20 @@
 import { Router } from 'express';
 const router = Router();
 import {
-  getAllStudents,
-  getStudentById,
-  createStudent,
-  deleteStudent,
+  getAllUsers,
+  getUserById,
+  createUser,
+  deleteUser,
   // addAssignment, 8 and 9 commented out due to unnecessary routes in 19 and 22
   // removeAssignment,
-} from '../../controllers/studentController.js';
+} from '../../controllers/userController.js';
 
-// /api/students
-router.route('/').get(getAllStudents).post(createStudent);
+// /api/users
+router.route('/').get(getAllUsers).post(createUsers);
 
 // /api/students/:studentId
 //comment out 17 TEMPORARILY
-// router.route('/:studentId').get(getStudentById).delete(deleteStudent);
+// router.route('/:userId').get(getUserById).delete(deleteUser);
 
 // /api/students/:studentId/assignments
 // router.route('/:studentId/assignments').post(addAssignment);
