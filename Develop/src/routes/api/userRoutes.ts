@@ -22,4 +22,4 @@ router.route('/').get(getAllUsers).post(createUsers);
 // /api/students/:studentId/assignments/:assignmentId
 // router.route('/:studentId/assignments/:assignmentId').delete(removeAssignment);
 
-export { router as studentRouter} ;
+export { router as userRouter} ;
