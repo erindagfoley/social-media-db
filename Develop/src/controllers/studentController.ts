@@ -1,31 +1,30 @@
-// ObjectId() method for converting studentId string into an ObjectId for querying database
-import { ObjectId } from 'mongodb';
-import { Student, Course } from '../models/index.js';
 import { Request, Response } from 'express';
+// import { ObjectId } from 'mongodb';
+import { Student, Course } from '../models/index.js';
 
-// TODO: Create an aggregate function to get the number of students overall
+// Aggregate function to get number of students overall
 
-export const headCount = async () => {
-    // Your code here
-    const numberOfStudents = await Student.aggregate()
-    return numberOfStudents;
-}
+// export const headCount = async () => {
+//     const numberOfStudents = await Student.aggregate()
+//         .count('studentCount');
+//     return numberOfStudents;
+// }
 
-// Aggregate function for getting the overall grade using $avg
-export const grade = async (studentId: string) =>
-    Student.aggregate([
-        // TODO: Ensure we include only the student who can match the given ObjectId using the $match operator
-    {
-        // Your code here
-      },
-      {
-        $unwind: '$assignments',
-      },
-      // TODO: Group information for the student with the given ObjectId alongside an overall grade calculated using the $avg operator
-      {
-        // Your code here
-      },
-    ]);
+// // Aggregate function for getting the overall grade using $avg
+// export const grade = async (studentId: string) =>
+//     Student.aggregate([
+//         // only include the given student by using $match
+//         { $match: { _id: new ObjectId(studentId) } },
+//         {
+//             $unwind: '$assignments',
+//         },
+//         {
+//             $group: {
+//                 _id: new ObjectId(studentId),
+//                 overallGrade: { $avg: '$assignments.score' },
+//             },
+//         },
+//     ]);
 
 /**
  * GET All Students /students
@@ -127,52 +126,52 @@ export const deleteStudent = async (req: Request, res: Response) => {
  * @param object assignment
  * @returns object student 
 */
+//the code below is commented out as it doesn't pertain to users
+// export const addAssignment = async (req: Request, res: Response) => {
+//     console.log('You are adding an assignment');
+//     console.log(req.body);
+//     try {
+//         const student = await Student.findOneAndUpdate(
+//             { _id: req.params.studentId },
+//             { $addToSet: { assignments: req.body } },
+//             { runValidators: true, new: true }
+//         );
 
-export const addAssignment = async (req: Request, res: Response) => {
-    console.log('You are adding an assignment');
-    console.log(req.body);
-    try {
-        const student = await Student.findOneAndUpdate(
-            { _id: req.params.studentId },
-            { $addToSet: { assignments: req.body } },
-            { runValidators: true, new: true }
-        );
+//         if (!student) {
+//             return res
+//                 .status(404)
+//                 .json({ message: 'No student found with that ID :(' });
+//         }
 
-        if (!student) {
-            return res
-                .status(404)
-                .json({ message: 'No student found with that ID :(' });
-        }
+//         return res.json(student);
+//     } catch (err) {
+//         return res.status(500).json(err);
+//     }
+// }
 
-        return res.json(student);
-    } catch (err) {
-        return res.status(500).json(err);
-    }
-}
+// /**
+//  * DELETE Assignment based on /students/:studentId/assignments
+//  * @param string assignmentId
+//  * @param string studentId
+//  * @returns object student 
+// */
 
-/**
- * DELETE Assignment based on /students/:studentId/assignments
- * @param string assignmentId
- * @param string studentId
- * @returns object student 
-*/
+// export const removeAssignment = async (req: Request, res: Response) => {
+//     try {
+//         const student = await Student.findOneAndUpdate(
+//             { _id: req.params.studentId },
+//             { $pull: { assignments: { assignmentId: req.params.assignmentId } } },
+//             { runValidators: true, new: true }
+//         );
 
-export const removeAssignment = async (req: Request, res: Response) => {
-    try {
-        const student = await Student.findOneAndUpdate(
-            { _id: req.params.studentId },
-            { $pull: { assignments: { assignmentId: req.params.assignmentId } } },
-            { runValidators: true, new: true }
-        );
+//         if (!student) {
+//             return res
+//                 .status(404)
+//                 .json({ message: 'No student found with that ID :(' });
+//         }
 
-        if (!student) {
-            return res
-                .status(404)
-                .json({ message: 'No student found with that ID :(' });
-        }
-
-        return res.json(student);
-    } catch (err) {
-        return res.status(500).json(err);
-    }
-}
+//         return res.json(student);
+//     } catch (err) {
+//         return res.status(500).json(err);
+//     }
+// }

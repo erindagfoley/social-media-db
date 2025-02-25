@@ -13,7 +13,7 @@ interface IStudent extends Document {
     assignments: Schema.Types.ObjectId[]
 }
 
-const assignmentSchema = new Schema<IAssignment>(
+const assignmentSchema = new Schema<IAssignment>( //schema only
     {
         assignmentId: {
             type: Schema.Types.ObjectId,
@@ -54,7 +54,7 @@ const studentSchema = new Schema<IStudent>({
         required: true,
         max_length: 50,
     },
-    assignments: [assignmentSchema],
+    assignments: [assignmentSchema], //thought model will have a subdoc of reactions. user model will not
 },
     {
         toJSON: {
