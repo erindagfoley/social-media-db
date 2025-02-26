@@ -2,42 +2,44 @@ import { Schema, model, type Document } from 'mongoose';
 
 interface IThought extends Document {
     //not sure what to change these properties to
-    name: string,
-    inPerson: boolean,
-    start: Date,
-    end: Date,
-    thoughts: Schema.Types.ObjectId[]
+    thoughtText: string,
+    createdAt: Date,
+    username: string,
+    reactions: Schema.Types.ObjectId[]
 }
 
 const thoughtSchema = new Schema<IThought>(
     {
         //not sure what to change these properties to
-        name: {
+        thoughtText: {
             type: String,
             required: true,
+            maxlength: 280,
+            minlength: 1,
         },
-        inPerson: {
-            type: Boolean,
-            default: true,
-        },
-        start: {
+        createdAt: {
             type: Date,
             default: Date.now(),
         },
-        end: {
-            type: Date,
-            // Sets a default value of 12 weeks from now
-            default: () => new Date(+new Date() + 84 * 24 * 60 * 60 * 1000),
+        username: {
+            type: String,
+            required: true,
         },
-        users: [
+        reactions: {
+            type: Schema.Types.ObjectId[],
+            // Sets a default value of 12 weeks from now
+            default: () => new Reaction(0),
+        },
+        reaction: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'user',
+                ref: 'reaction',
             },
         ],
     },
     {
         toJSON: {
+            getters: true,
             virtuals: true,
         },
         timestamps: true
