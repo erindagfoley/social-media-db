@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import { Thought, User } from '../models/index.js'; //user and thought for challenge
 
 /**
- * GET All Courses /courses
- * @returns an array of Courses
+ * GET All Thoughts /thoughts
+ * @returns an array of Thoughts
 */
 export const getAllThoughts = async(_req: Request, res: Response) => {
     try {
@@ -17,16 +17,16 @@ export const getAllThoughts = async(_req: Request, res: Response) => {
 }
 
 /**
- * GET Thought based on id /thought/:id
+ * GET Thought based on id /thoughts/:id
  * @param string id
  * @returns a single Thought object
 */
 export const getThoughtById = async (req: Request, res: Response) => {
     const { thoughtId } = req.params;
     try {
-      const thought = await Thought.findById(thoughtId);
-      if(thought) {
-        res.json(thought);
+      const oneThought = await Thought.findById(thoughtId);
+      if(oneThought) {
+        res.json(oneThought);
       } else {
         res.status(404).json({
           message: 'Thought not found'
@@ -45,10 +45,11 @@ export const getThoughtById = async (req: Request, res: Response) => {
  * @returns a single Thought object
 */
 export const createThought = async (req: Request, res: Response) => {
-    const { thought } = req.body;
+    const { thoughtText, username } = req.body;
     try {
       const newThought = await Thought.create({
-        thought
+        thoughtText,
+        username
       });
       res.status(201).json(newThought);
     } catch (error: any) {
@@ -89,21 +90,25 @@ export const updateThought = async (req: Request, res: Response) => {
  * @returns string 
 */
 export const deleteThought = async (req: Request, res: Response) => {
-    try {
-      const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId});
-      
+  try {
+      const thought = await Thought.findOne({ _id: req.params.thoughtId});
+      if(thought) {
+          await User.findOneAndUpdate(
+          { username: thought.username },
+          { $pull: {thoughts: thought._id} },
+          { runValidators: true, new: true }
+        );
+      }
+      await Thought.deleteOne({ _id: req.params.thoughtId});
       if(!thought) {
         res.status(404).json({
           message: 'No thought with that ID'
         });
-      } else {
-        await User.deleteMany({ _id: { $in: thought.users } });
-        res.json({ message: 'Thoughts and users deleted!' });
-      }
-      
+      } 
+      res.status(201).json({message: 'Thought has been deleted'});
     } catch (error: any) {
       res.status(500).json({
         message: error.message
       });
     }
-  };
+}

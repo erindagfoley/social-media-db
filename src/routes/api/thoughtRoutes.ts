@@ -8,7 +8,7 @@ import {
   deleteThought,
 } from '../../controllers/thoughtController.js';
 
-// /api/courses
+// /api/thoughts
 router.route('/').get(getAllThoughts).post(createThought);
 
 // /api/thoughts/:thoughtId
@@ -19,5 +19,6 @@ router
   .put(createThought)
   .put(updateThought)
   .delete(deleteThought);
+
 
 export { router as thoughtRouter };
