@@ -1,51 +1,86 @@
-import { Schema, model, type Document } from 'mongoose';
+import { Schema, Types, model, type Document } from 'mongoose';
 
 interface IThought extends Document {
-    //not sure what to change these properties to
     thoughtText: string,
     createdAt: Date,
     username: string,
-    reactions: Schema.Types.ObjectId[]
+    reactions: IReaction[];
 }
 
-const thoughtSchema = new Schema<IThought>(
+interface IReaction extends Document {
+    reactionId: Schema.Types.ObjectId,
+    reactionBody: string,
+    username: string,
+    createdAt: Date 
+}
+
+const reactionSchema = new Schema<IReaction>(
     {
-        //not sure what to change these properties to
-        thoughtText: {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId(),
+        },
+        reactionBody: {
             type: String,
             required: true,
             maxlength: 280,
-            minlength: 1,
-        },
-        createdAt: {
-            type: Date,
-            default: Date.now(),
         },
         username: {
             type: String,
             required: true,
         },
-        reactions: {
-            type: Schema.Types.ObjectId[],
-            // Sets a default value of 12 weeks from now
-            default: () => new Reaction(0),
-        },
-        reaction: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'reaction',
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: (val: any) => {
+                return val.toLocaleString();
             },
-        ],
+        }
     },
     {
         toJSON: {
             getters: true,
-            virtuals: true,
         },
-        timestamps: true
-    },
+        timestamps: true,
+        _id: false,
+        id: false,    
+    }
 );
 
-const Thought = model<IThought>('Thought', thoughtSchema);
+const thoughtSchema = new Schema<IThought>({
+    thoughtText: {
+        type: String,
+        required: true,
+        max_length: 280,
+        min_length: 1,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        get: (val: any) => {
+            return val.toLocaleString();
+        },
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    reactions: [reactionSchema],
+},
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true,
+        },
+        timestamps: true,
+        id: false 
+    }
+);
+
+thoughtSchema.virtual('reactionCount').get(function() {
+    return this.reactions.length;
+  });
+
+const Thought = model('Thought', thoughtSchema);
 
 export default Thought;
