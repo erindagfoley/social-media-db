@@ -1,7 +1,7 @@
 import db from '../config/connection.js';
 import { User } from '../models/index.js';
 import cleanDB from './cleanDB.js';
-import { getRandomUsername } from './data.js'; //not sure what random name should be changed to
+// import { getRandomUsername } from './data.js'; //not sure what random name should be changed to
 
 try {
   await db();
@@ -13,9 +13,9 @@ try {
   // Loop 20 times -- add users to the users array
   for (let i = 0; i < 20; i++) {
     // Get some random username objects using a helper function that we imported from ./data
-    const username = getRandomUsername();
+    // const username = getRandomUsername();
     users.push({
-      username
+      // username
     });
   }
 
