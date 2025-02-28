@@ -7,7 +7,7 @@ import { Thought, User } from '../models/index.js'; //user and thought for chall
 */
 export const getAllThoughts = async(_req: Request, res: Response) => {
     try {
-        const thoughts = await Thought.find(); //user.find or thought.find 
+        const thoughts = await Thought.find(); //user.find or thought.find for controllers
         res.json(thoughts);
     } catch(error: any){
         res.status(500).json({
@@ -24,12 +24,12 @@ export const getAllThoughts = async(_req: Request, res: Response) => {
 export const getThoughtById = async (req: Request, res: Response) => {
     const { thoughtId } = req.params;
     try {
-      const user = await Thought.findById(thoughtId);
-      if(user) {
-        res.json(user);
+      const thought = await Thought.findById(thoughtId);
+      if(thought) {
+        res.json(thought);
       } else {
         res.status(404).json({
-          message: 'Not found'
+          message: 'Thought not found'
         });
       }
     } catch (error: any) {
