@@ -21,7 +21,8 @@ To set up on your local machine, follow these steps:
 5. Run npm start to start the application
 
 ## Usage
-1. Click on any of the GET, PUT, POST, or DELETE routes to get users, edit users, post new users, or delete users. The same operations can be performed for a user's thoughts. When performing operations that specifically need a user or a thought ID, such as updating (PUT) and deleting, you will need to copy/paste an ID.
+1. Click on any of the GET, PUT, POST, or DELETE routes to get users, edit users, post new users, or delete users. The same operations can be performed for a user's thoughts.
+3. When performing operations that specifically need a user or a thought ID, such as updating (PUT) and deleting, you will need to copy/paste an ID.
 
 ## Collaborators
 This project was created by Erin Foley with starter code from edX bootcamps. Special thanks to Leif Hetland and Kayvon Kazemini for their assistance on this project.
